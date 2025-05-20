@@ -5,6 +5,8 @@ on:
 env:
   DOTNET_VERSION: '6.0.x'  # .NET SDK version
   ANDROID_PROJECT: CoolapkUNO/CoolapkUNO.Mobile/CoolapkUNO.Mobile.csproj
+  ANDROID_API_LEVEL: '31'
+  ANDROID_BUILD_TOOLS: '30.0.3'
 jobs:
   build-android:
     runs-on: ubuntu-latest
@@ -26,8 +28,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     
+    # Install Android SDK and required packages
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+      with:
+        packages: |
+          platforms;android-${{ env.ANDROID_API_LEVEL }}
+          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
+        accept-android-sdk-licenses: true
 
     # Install Android workload (required for Uno Platform Android builds)
     - name: Install Android Workload
