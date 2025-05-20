@@ -32,10 +32,8 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        packages: |
-          platforms;android-${{ env.ANDROID_API_LEVEL }}
-          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
-        accept-android-sdk-licenses: true
+        packages: 'platforms;android-${{ env.ANDROID_API_LEVEL }} build-tools;${{ env.ANDROID_BUILD_TOOLS }}'
+        log-accepted-android-sdk-licenses : false
 
     # Install Android workload (required for Uno Platform Android builds)
     - name: Install Android Workload
