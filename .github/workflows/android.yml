@@ -1,12 +1,12 @@
 name: Build Android (ARM64)
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_dispatch:
 env:
   DOTNET_VERSION: '6.0.x'  # .NET SDK version
-  ANDROID_PROJECT: CoolapkUNO/CoolapkUNO.Mobile/CoolapkUNO.Mobile.csproj  # Path to Android project
-  
+  ANDROID_PROJECT: CoolapkUNO/CoolapkUNO.Mobile/CoolapkUNO.Mobile.csproj
+  ANDROID_API_LEVEL: '31'  
+  ANDROID_BUILD_TOOLS: '30.0.3'
 jobs:
   build-android:
     runs-on: ubuntu-latest
@@ -21,6 +21,13 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    # Install Android SDK & required API level
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: ${{ env.ANDROID_API_LEVEL }}
+        build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
 
     # Install Android workload (required for Uno Platform Android builds)
     - name: Install Android Workload
