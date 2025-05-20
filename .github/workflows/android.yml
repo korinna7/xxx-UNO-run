@@ -1,0 +1,42 @@
+name: Build Android (ARM64)
+
+on:
+  push:
+    branches: [ "master" ]
+env:
+  DOTNET_VERSION: '6.0.x'  # .NET SDK version
+  ANDROID_PROJECT: CoolapkUNO/CoolapkUNO.Mobile/CoolapkUNO.Mobile.csproj  # Path to Android project
+  
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+      # Install .NET SDK
+    - name: Install .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    # Install Android workload (required for Uno Platform Android builds)
+    - name: Install Android Workload
+      run: dotnet workload install android
+
+    # Restore dependencies
+    - name: Restore NuGet packages
+      run: dotnet restore ${{ env.ANDROID_PROJECT }}
+
+    # Build Android app (ARM64)
+    - name: Build Android (Release)
+      run: dotnet build ${{ env.ANDROID_PROJECT }} -c Release -f net6.0-android -p:AndroidArchitectures=arm64-v8a
+
+    # Upload APK/AAB as artifact (for download)
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-arm64-release
+        path: ./artifacts/
