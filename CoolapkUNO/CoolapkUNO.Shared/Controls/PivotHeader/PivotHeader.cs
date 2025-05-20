@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace CoolapkUNO.Controls
 {
-    public sealed class PivotHeader : ListBox
+    public partial class PivotHeader : ListBox
     {
         private CancellationTokenSource cts;
 
