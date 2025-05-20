@@ -47,9 +47,19 @@ jobs:
     - name: Build Android (Release)
       run: dotnet build ${{ env.ANDROID_PROJECT }} -c Release -f net6.0-android -p:AndroidArchitectures=arm64-v8a
 
+    - name: Publish Android (Release)
+      run: |
+        dotnet publish ${{ env.ANDROID_PROJECT }} \
+          -c Release \
+          -f net6.0-android \
+          -p:AndroidArchitectures=arm64-v8a \
+          -p:AndroidPackageFormat=apk \
+          -p:OutputPath=./artifacts/
+
     # Upload APK/AAB as artifact (for download)
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: android-arm64-release
-        path: ./artifacts/
+        path: ./artifacts/*.apk
+        if-no-files-found: error
