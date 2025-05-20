@@ -59,3 +59,4 @@ jobs:
         name: android-arm64-release
         path: artifacts/*.apk
         if-no-files-found: error
+        retention-days: 7
